@@ -631,19 +631,23 @@ public class PostCodes{
     protected int stop;      // the last postcode to include
     protected boolean show;  // do we show multiple suburb names per postcode?
     
+    /**
+    This method initialize the scanner object and print the heading
+    */
     public PostCodes(){
-        
         sc = new Scanner(System.in);
-        System.out.println("Tasmanian Postcodes");
-        
+        System.out.println("Tasmanian Postcodes");  //Printing the heading
     }
     
+    /**
+    This method gets information from user and updates different variables as per the requirements.
+    */
     public void configure(){
         
         char input;    //variable to store user's decision
         System.out.println("\nPrint every suburb for each selected postcode [Y/N]:");
-        input = sc.next().charAt(0);
-        input = Character.toUpperCase(input);
+        input = sc.next().charAt(0); //Getting input decision from user and storing. 
+        input = Character.toUpperCase(input); //Converting the user input into UpperCase
         if(input == 'Y'){
             
             show = true;
@@ -656,61 +660,69 @@ public class PostCodes{
             System.out.println("...N assumed...");
         }
         
-        
         System.out.println("Enter number of first postcode to print:");
-        start = sc.nextInt();
+        start = sc.nextInt(); //Getting user's choice for first postcode and storing it.
         if(start < MIN || start > MAX){
-            start = MIN;
+            start = MIN; //Putting the value of MIN for all value less than MIN
             System.out.println("...7000 assumed...");
         };
         
         System.out.println("Enter number of last postcode to print:");
-        stop = sc.nextInt();
+        stop = sc.nextInt(); //Getting user's choice for first postcode and storing it.
         if(stop > MAX || stop < MIN){
-            stop = MAX;
+            stop = MAX; //Putting the value of MAX for all values more than MAX
             System.out.println("...7470 assumed...");
         }
         
     }
-    
+    /**
+    This method generates the output for all the input done by user in configure method
+    */
     public void printTables(){
         
         
-        int previousValue = Integer.parseInt(POSTCODES[0][0])-1; 
+        int previousValue = Integer.parseInt(POSTCODES[0][0])-1; //Making an empty variable and storing the value of postcode 1 less than minimum
+       //This loop generally prints all postcodes but it follows the code below it
         for(int i = 0;i<  NUM_POSTCODES;i++){
-            int count = 0;
+            int count = 0; //Declaring the variable count to check the value of WIDTH
+            
+            //This line checks either the input postcode is in range of maximum and minimum postcode values
             if(Integer.parseInt(POSTCODES[i][POSTCODE]) >= start && Integer.parseInt(POSTCODES[i][POSTCODE]) <= stop){
-                
+                //This code is executed if the value of show is false or user don't want to see all suburbs of a postcode
                 if(show==false){
-                    if(Integer.parseInt(POSTCODES[i][POSTCODE]) != previousValue){
+                    if(Integer.parseInt(POSTCODES[i][POSTCODE]) != previousValue) //This checks whether the postcode at given position is equal to the previousvalue of postcode or not
+                    {
                         System.out.print(POSTCODES[i][POSTCODE]);
-                        previousValue = Integer.parseInt(POSTCODES[i][POSTCODE]);
-                        do{
+                        previousValue = Integer.parseInt(POSTCODES[i][POSTCODE]); //This updates the value of previousValue as the value that is currently taken at the end of the loop
+                        do //This make sure that the value of WIDTH is not more than 8
+                        {
                             
                             System.out.print(" ");
                             count++;
                         }while(count<=WIDTH);
-                        System.out.println(POSTCODES[i][NAME]);
+                        System.out.println(POSTCODES[i][NAME]);//Prints the name of the suburb
                     }
                     
                     
-                    
+                 //This is executed if the value of show is true or the user wants to see all the suburbs name for a related postcode   
                 }else{
                     
-                    if(Integer.parseInt(POSTCODES[i][POSTCODE]) != previousValue){
-                        System.out.print("\n"+POSTCODES[i][POSTCODE]);
-                        previousValue = Integer.parseInt(POSTCODES[i][POSTCODE]);
-                        do{
+                    if(Integer.parseInt(POSTCODES[i][POSTCODE]) != previousValue) //This checks whether the postcode at given position is equal to the previousvalue of postcode or not
+                    {
+                        System.out.print("\n"+POSTCODES[i][POSTCODE]); //Prints the postcodes according to the loop
+                        previousValue = Integer.parseInt(POSTCODES[i][POSTCODE]); //This updates the value of previousValue as the value that is currently taken at the end of the loop
+                        do//This make sure that the value of WIDTH is not more than 8
+                        {
                             
                             System.out.print(" ");
                             count++;
                         }while(count<=WIDTH);
-                        System.out.print(POSTCODES[i][NAME]);
-                    }else if(Integer.parseInt(POSTCODES[i][POSTCODE]) == previousValue){
+                        System.out.print(POSTCODES[i][NAME]); //Prints the name of the suburbs
+                        //This line of code is executed when the postcode of previousValue is same to the value of postcode running currently during the loop
+                    }else if(Integer.parseInt(POSTCODES[i][POSTCODE]) == previousValue) //Checks whether the value of both postcodes are same or not
+                    {
                         
-                        System.out.print(", "+POSTCODES[i][NAME]);
-                        count++;
-                        
+                        System.out.print(", "+POSTCODES[i][NAME]); //Prints the name of the suburbs
                     }
                 }
             }
